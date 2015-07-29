@@ -3,7 +3,7 @@ defmodule GetUpdatesResponse do
 end
 
 defmodule State do
-  defstruct latest_update_id: nil
+  defstruct latest_update_id: nil, telegram_example_chat_id: Application.get_env(:echo_bot_elixir, :telegram_example_chat_id)
 end
 
 defmodule EchoBotElixir do
@@ -23,6 +23,16 @@ defmodule EchoBotElixir do
         IO.puts "latest_update_id"
         IO.inspect latest_update_id
         new_state = update_state(latest_update_id, state)
+
+        case latest_update_id do
+          nil ->
+            :ok
+          _ ->
+            {:ok, telegram_example_chat_id} = Map.fetch state, :telegram_example_chat_id
+            IO.puts telegram_example_chat_id
+            TelegramApi.sendMessage telegram_example_chat_id, "suka hard duro"
+        end
+
         loop(new_state)
     after
       1_000 ->
