@@ -16,7 +16,7 @@ defmodule EchoBotElixir do
     receive do
       :poll ->
         poll_id = state.latest_update_id
-        update = do_poll poll_id
+        update = TelegramApi.getUpdates poll_id
         print_result update
         parsed_update = parse update
         latest_update_id = get_latest_update_id parsed_update.result
@@ -34,20 +34,6 @@ defmodule EchoBotElixir do
   defp update_state(nil, state), do: state
 
   defp update_state(update_id, state), do: %State{latest_update_id: update_id + 1}
-
-  defp do_poll poll_id do
-    token = Application.get_env(:echo_bot_elixir, :telegram_api_token)
-    url = "https://api.telegram.org/bot#{token}/getUpdates?offset=#{poll_id}"
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, body}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "Not found :("}
-      {:error, %HTTPoison.Error{reason: _reason}} ->
-        {:error, "nasty exception here call the elixir police"}
-    end
-  end
-
 
   defp parse({:error, reason}), do: %GetUpdatesResponse{}
 
