@@ -9,7 +9,7 @@ defmodule TelegramGetUpdatesToModelTest do
     assert result == nil
   end
 
-  test "returns struct if can convert GetUpdatesResponse" do
+  test "returns GetUpdatesResponse with empty messages if can convert GetUpdatesResponse" do
     getUpdatesResponse = %GetUpdatesResponse{ok: "true", result: []}
 
     result = TelegramMessageUpdatesBuilder.buildWith getUpdatesResponse
