@@ -1,7 +1,3 @@
-defmodule GetUpdatesResponse do
-  defstruct ok: "false", result: []
-end
-
 defmodule State do
   defstruct latest_update_id: nil, telegram_example_chat_id: Application.get_env(:echo_bot_elixir, :telegram_example_chat_id)
 end
