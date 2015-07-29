@@ -1,4 +1,10 @@
 EchoBotElixir
 =============
 
-** TODO: Add description **
+mix deps.get
+
+mix compile
+
+iex -S mix
+
+> EchoBotElixir.start_link
