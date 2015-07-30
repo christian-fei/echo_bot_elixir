@@ -15,17 +15,9 @@ defmodule EchoBotElixir do
         get_update_response = TelegramApi.getUpdates poll_id
         parsed_get_update_response = parse_get_update get_update_response
         telegramMessageUpdates = TelegramMessageUpdatesBuilder.buildWith parsed_get_update_response
+        send_messages telegramMessageUpdates.messages
         latest_update_id = telegramMessageUpdates.latest_update_id
-        new_state = update_state(latest_update_id, state)
-
-        case latest_update_id do
-          nil ->
-            :ok
-          _ ->
-            send_messages telegramMessageUpdates.messages
-        end
-
-        loop(new_state)
+        loop update_state(latest_update_id, state)
     after
       1_000 ->
         send(self(), :poll)
