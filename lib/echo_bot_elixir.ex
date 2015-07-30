@@ -15,8 +15,7 @@ defmodule EchoBotElixir do
         get_update_response = TelegramApi.getUpdates poll_id
         parsed_get_update_response = parse_get_update get_update_response
         telegramMessageUpdates = TelegramMessageUpdatesBuilder.buildWith parsed_get_update_response
-        IO.inspect telegramMessageUpdates
-        latest_update_id = get_latest_update_id parsed_get_update_response.result
+        latest_update_id = telegramMessageUpdates.latest_update_id
         IO.puts "latest_update_id"
         IO.inspect latest_update_id
         new_state = update_state(latest_update_id, state)
@@ -54,14 +53,6 @@ defmodule EchoBotElixir do
   defp print_result({:ok, update}) do
     parsed_get_update_response = parse_get_update {:ok, update}
     IO.inspect(parsed_get_update_response.result)
-  end
-
-
-  defp get_latest_update_id([]), do: nil
-
-  defp get_latest_update_id(results) do
-    [h|_] = Enum.reverse results
-    h["update_id"]
   end
 
 end
