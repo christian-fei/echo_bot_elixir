@@ -1,5 +1,5 @@
 defmodule State do
-  defstruct latest_update_id: nil, telegram_example_chat_id: Application.get_env(:echo_bot_elixir, :telegram_example_chat_id)
+  defstruct latest_update_id: nil
 end
 
 defmodule EchoBotElixir do
