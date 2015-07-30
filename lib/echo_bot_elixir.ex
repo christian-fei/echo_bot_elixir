@@ -29,22 +29,18 @@ defmodule EchoBotElixir do
   defp send_messages [] do
     :ok
   end
-
-
   defp send_messages [head | tail] do
     TelegramApi.sendMessage head["chat_id"], "suka hard duro"
     send_messages tail
   end
 
 
-  defp update_state(nil, state), do: state
 
+  defp update_state(nil, state), do: state
   defp update_state(update_id, state), do: %State{latest_update_id: update_id + 1}
 
 
-
   defp parse_get_update({:error, reason}), do: %GetUpdatesResponse{}
-
   defp parse_get_update({:ok, update}) do
     Poison.decode! update, as: GetUpdatesResponse
   end
