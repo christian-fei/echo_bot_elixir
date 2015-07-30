@@ -14,7 +14,7 @@ defmodule EchoBotElixir do
         poll_id = state.latest_update_id
         get_update_response = TelegramApi.getUpdates poll_id
         parsed_get_update_response = parse_get_update get_update_response
-        telegramMessageUpdates = TelegramMessageUpdatesBuilder.buildWith parsed_get_update_response
+        telegramMessageUpdates = TelegramMessageUpdatesMapper.buildWith parsed_get_update_response
         send_messages telegramMessageUpdates.messages
         latest_update_id = telegramMessageUpdates.latest_update_id
         loop update_state(latest_update_id, state)
