@@ -12,10 +12,11 @@ defmodule EchoBotElixir do
     receive do
       :poll ->
         poll_id = state.latest_update_id
-        update = TelegramApi.getUpdates poll_id
-        print_result update
-        parsed_update = parse update
-        latest_update_id = get_latest_update_id parsed_update.result
+        get_update_response = TelegramApi.getUpdates poll_id
+        parsed_get_update_response = parse_get_update get_update_response
+        telegramMessageUpdates = TelegramMessageUpdatesBuilder.buildWith parsed_get_update_response
+        IO.inspect telegramMessageUpdates
+        latest_update_id = get_latest_update_id parsed_get_update_response.result
         IO.puts "latest_update_id"
         IO.inspect latest_update_id
         new_state = update_state(latest_update_id, state)
@@ -41,9 +42,9 @@ defmodule EchoBotElixir do
 
   defp update_state(update_id, state), do: %State{latest_update_id: update_id + 1}
 
-  defp parse({:error, reason}), do: %GetUpdatesResponse{}
+  defp parse_get_update({:error, reason}), do: %GetUpdatesResponse{}
 
-  defp parse({:ok, update}) do
+  defp parse_get_update({:ok, update}) do
     Poison.decode! update, as: GetUpdatesResponse
   end
 
@@ -51,8 +52,8 @@ defmodule EchoBotElixir do
   defp print_result({:error, reason}), do: IO.puts(reason)
 
   defp print_result({:ok, update}) do
-    parsed_update = parse {:ok, update}
-    IO.inspect(parsed_update.result)
+    parsed_get_update_response = parse_get_update {:ok, update}
+    IO.inspect(parsed_get_update_response.result)
   end
 
 

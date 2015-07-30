@@ -1,3 +1,3 @@
 defmodule GetUpdatesResponse do
-  defstruct ok: "false", result: []
+  defstruct ok: false, result: []
 end
