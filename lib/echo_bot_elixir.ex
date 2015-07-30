@@ -22,8 +22,7 @@ defmodule EchoBotElixir do
           nil ->
             :ok
           _ ->
-            {:ok, telegram_example_chat_id} = Map.fetch state, :telegram_example_chat_id
-            TelegramApi.sendMessage telegram_example_chat_id, "suka hard duro"
+            send_messages telegramMessageUpdates.messages
         end
 
         loop(new_state)
@@ -34,22 +33,27 @@ defmodule EchoBotElixir do
     end
   end
 
+
+  defp send_messages [] do
+    :ok
+  end
+
+
+  defp send_messages [head | tail] do
+    TelegramApi.sendMessage head["chat_id"], "suka hard duro"
+    send_messages tail
+  end
+
+
   defp update_state(nil, state), do: state
 
   defp update_state(update_id, state), do: %State{latest_update_id: update_id + 1}
+
+
 
   defp parse_get_update({:error, reason}), do: %GetUpdatesResponse{}
 
   defp parse_get_update({:ok, update}) do
     Poison.decode! update, as: GetUpdatesResponse
   end
-
-
-  defp print_result({:error, reason}), do: IO.puts(reason)
-
-  defp print_result({:ok, update}) do
-    parsed_get_update_response = parse_get_update {:ok, update}
-    IO.inspect(parsed_get_update_response.result)
-  end
-
 end
