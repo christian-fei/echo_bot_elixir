@@ -17,7 +17,8 @@ defmodule TelegramMessageUpdatesBuilder do
   end
 
   defp mapToMessages [head | tail] do
-    [%{"text" => head["message"]["text"], "update_id" => head["update_id"]} | mapToMessages tail]
+    mappedMessage = %{"text" => head["message"]["text"], "update_id" => head["update_id"]}
+    [mappedMessage | mapToMessages tail]
   end
 
 
