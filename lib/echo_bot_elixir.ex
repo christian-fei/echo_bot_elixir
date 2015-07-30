@@ -16,8 +16,6 @@ defmodule EchoBotElixir do
         parsed_get_update_response = parse_get_update get_update_response
         telegramMessageUpdates = TelegramMessageUpdatesBuilder.buildWith parsed_get_update_response
         latest_update_id = telegramMessageUpdates.latest_update_id
-        IO.puts "latest_update_id"
-        IO.inspect latest_update_id
         new_state = update_state(latest_update_id, state)
 
         case latest_update_id do
@@ -25,7 +23,6 @@ defmodule EchoBotElixir do
             :ok
           _ ->
             {:ok, telegram_example_chat_id} = Map.fetch state, :telegram_example_chat_id
-            IO.puts telegram_example_chat_id
             TelegramApi.sendMessage telegram_example_chat_id, "suka hard duro"
         end
 

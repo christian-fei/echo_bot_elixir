@@ -25,6 +25,7 @@ defmodule TelegramGetUpdatesToModelTest do
     result = TelegramMessageUpdatesBuilder.buildWith getUpdatesResponse
     expected = %TelegramMessageUpdates{latest_update_id: 968217487, messages: [%{
       "text" => "/echo test",
+      "chat_id" => 27922851,
       "update_id" => 968217487
     }]}
 
