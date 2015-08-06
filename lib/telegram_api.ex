@@ -4,20 +4,25 @@ defmodule TelegramApi do
 
   def get_updates offset do
     url = "https://api.telegram.org/bot#{@token}/getUpdates?offset=#{offset}"
-    function = fn() -> HTTPoison.get url end
-    |> do_apply
+    |> do_request(:get)
+    |> handle_result
   end
 
   def send_message chat_id, text do
     url = "https://api.telegram.org/bot#{@token}/sendMessage"
-    body = {:form, [chat_id: chat_id, text: text]}
     headers = %{"Content-type": "application/x-www-form-urlencoded"}
-    function = fn -> HTTPoison.post url, body, headers end
-    |> do_apply
+    body = {:form, [chat_id: chat_id, text: text]}
+    {url, headers, body}
+    |> do_request(:post)
+    |> handle_result
   end
 
-  defp do_apply function do
-    case function.() do
+  defp do_request(url, :get), do: HTTPoison.get(url)
+
+  defp do_request({url, headers, body}, :post), do: HTTPoison.post(url, body, headers)
+
+  defp handle_result result do
+    case result do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
       {:ok, %HTTPoison.Response{status_code: 404}} ->
