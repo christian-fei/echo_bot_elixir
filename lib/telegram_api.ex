@@ -18,12 +18,11 @@ defmodule TelegramApi do
     url = "https://api.telegram.org/bot#{token}/sendMessage"
     case HTTPoison.post(url, {:form, [chat_id: chat_id, text: text]}, %{"Content-type": "application/x-www-form-urlencoded"}) do
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        IO.puts "-- sendMessage #{status_code} body #{body}"
         {:ok, body}
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "Not found :("}
-      {:error, %HTTPoison.Error{reason: _reason}} ->
-        {:error, "nasty exception here call the elixir police"}
+        {:error, "Not found"}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, reason}
     end
   end
 
