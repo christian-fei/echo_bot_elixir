@@ -9,12 +9,16 @@ defmodule TelegramApi do
   end
 
   def send_message chat_id, text do
+    call_params_from chat_id, text
+    |> do_request(:post)
+    |> handle_result
+  end
+
+  defp call_params_from chat_id, text do
     url = "https://api.telegram.org/bot#{@token}/sendMessage"
     headers = %{"Content-type": "application/x-www-form-urlencoded"}
     body = {:form, [chat_id: chat_id, text: text]}
     {url, headers, body}
-    |> do_request(:post)
-    |> handle_result
   end
 
   defp do_request(url, :get), do: HTTPoison.get(url)
