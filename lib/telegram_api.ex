@@ -1,6 +1,6 @@
 defmodule TelegramApi do
 
-  def getUpdates offset do
+  def get_updates offset do
     token = Application.get_env(:echo_bot_elixir, :telegram_api_token)
     url = "https://api.telegram.org/bot#{token}/getUpdates?offset=#{offset}"
     case HTTPoison.get(url) do
@@ -13,7 +13,7 @@ defmodule TelegramApi do
     end
   end
 
-  def sendMessage chat_id, text do
+  def send_message chat_id, text do
     token = Application.get_env(:echo_bot_elixir, :telegram_api_token)
     url = "https://api.telegram.org/bot#{token}/sendMessage"
     case HTTPoison.post(url, {:form, [chat_id: chat_id, text: text]}, %{"Content-type": "application/x-www-form-urlencoded"}) do
