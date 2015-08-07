@@ -9,8 +9,8 @@ defmodule TelegramApi do
   end
 
   def send_message chat_id, text do
-    params = call_params_from chat_id, text
-    result = do_request(params, :post)
+    call_params_from(chat_id, text)
+    |> do_request(:post)
     |> handle_result
   end
 
