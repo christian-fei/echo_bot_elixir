@@ -2,30 +2,30 @@ defmodule TelegramApi do
 
   @token Application.get_env(:echo_bot_elixir, :telegram_api_token)
 
-  def get_updates offset do
+  def get_updates(offset) do
     url = "https://api.telegram.org/bot#{@token}/getUpdates?offset=#{offset}"
-    |> do_request(:get)
+    |> make_request(:get)
     |> handle_result
   end
 
-  def send_message chat_id, text do
+  def send_message(chat_id, text) do
     call_params_from(chat_id, text)
-    |> do_request(:post)
+    |> make_request(:post)
     |> handle_result
   end
 
-  defp call_params_from chat_id, text do
+  defp call_params_from(chat_id, text) do
     url = "https://api.telegram.org/bot#{@token}/sendMessage"
     headers = %{"Content-type": "application/x-www-form-urlencoded"}
     body = {:form, [chat_id: chat_id, text: text]}
     {url, headers, body}
   end
 
-  defp do_request(url, :get), do: HTTPoison.get(url)
+  defp make_request(url, :get), do: HTTPoison.get(url)
 
-  defp do_request({url, headers, body}, :post), do: HTTPoison.post(url, body, headers)
+  defp make_request({url, headers, body}, :post), do: HTTPoison.post(url, body, headers)
 
-  defp handle_result result do
+  defp handle_result(result) do
     case result do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}

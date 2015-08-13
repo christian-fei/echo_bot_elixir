@@ -1,8 +1,8 @@
 defmodule TelegramMessageUpdatesMapper do
   def buildWith getUpdatesResponse do
     case getUpdatesResponse do
-      %{ok: false, result: _} -> nil
-      %{ok: true, result: result} ->
+      %{"ok" => false, "result" => _} -> nil
+      %{"ok" => true,  "result" => result} ->
         latest_update_id = get_latest_update_id result
         messages = mapToMessages result
         %TelegramMessageUpdates{latest_update_id: latest_update_id, messages: messages}
@@ -12,7 +12,7 @@ defmodule TelegramMessageUpdatesMapper do
 
   defp mapToMessages([]), do: []
 
-  defp mapToMessages [head | tail] do
+  defp mapToMessages([head | tail]) do
     mappedMessage = %{
       "text" => head["message"]["text"],
       "chat_id" => head["message"]["chat"]["id"],

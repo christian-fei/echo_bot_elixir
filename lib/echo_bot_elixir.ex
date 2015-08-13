@@ -27,7 +27,7 @@ defmodule EchoBotElixir do
 
 
   defp send_messages([]), do: :ok
-  defp send_messages [head | tail] do
+  defp send_messages([head | tail]) do
     TelegramApi.send_message head["chat_id"], "suka hard duro"
     send_messages tail
   end
