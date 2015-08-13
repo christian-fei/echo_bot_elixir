@@ -10,9 +10,7 @@ defmodule TelegramMessageUpdatesMapper do
   end
 
 
-  defp mapToMessages [] do
-    []
-  end
+  defp mapToMessages([]), do: []
 
   defp mapToMessages [head | tail] do
     mappedMessage = %{

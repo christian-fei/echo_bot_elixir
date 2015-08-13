@@ -37,7 +37,7 @@ defmodule EchoBotElixir do
 
 
   defp update_state(nil, state), do: state
-  defp update_state(update_id, state), do: %State{latest_update_id: update_id + 1}
+  defp update_state(update_id, _), do: %State{latest_update_id: update_id + 1}
 
 
   defp parse_get_update({:error, reason}), do: %{}
